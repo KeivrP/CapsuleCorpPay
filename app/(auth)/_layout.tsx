@@ -1,0 +1,23 @@
+import React from "react"
+import { Redirect, Stack } from "expo-router"
+import { useSession } from "@/context/AuthSession";
+import { Loading } from "@/components/animated/Loading";
+
+export default function RootLayout() {
+    const { session, isLoading } = useSession()
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (session) {
+        return <Redirect href="/(tabs)/" />;
+    }
+    return (
+        <Stack>
+            <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
+            <Stack.Screen name="onBoardindScreen1" options={{ headerShown: false }} />
+            <Stack.Screen name="SignUpScreen" options={{ headerShown: false }} />
+        </Stack>
+    )
+}

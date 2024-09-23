@@ -1,11 +1,12 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { primaryColor } from '@/constants/Colors';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'signUp' | 'headerText' | 'subtitle1' | 'headerText1';
 };
 
 export function ThemedText({
@@ -26,6 +27,10 @@ export function ThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
+        type === 'signUp' ? styles.signUp : undefined,
+        type === 'headerText' ? styles.headerText : undefined,
+        type === 'subtitle1' ? styles.subtitle1 : undefined,
+        type === 'headerText1' ? styles.headerText1 : undefined,
         style,
       ]}
       {...rest}
@@ -37,24 +42,65 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: 'Poppins-Bold',
+    color: primaryColor,
+
+  },
+  headerText1: {
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
+    color: primaryColor,
+
+  },
+  headerText: {
+    color: primaryColor,
+    fontSize: 27,
+    lineHeight: 48,
+    fontFamily: 'Poppins-Regular',
+
+  },
+  signUp: {
+    fontSize: 20,
+    lineHeight: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Poppins-Regular',
+    color: primaryColor,
+
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
+    fontFamily: 'Poppins-Bold',
+
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
+    fontSize: 23,
+    lineHeight: 28.5,
+    color: primaryColor,
+    fontFamily: 'Poppins-Bold',
+
+
   },
   subtitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
+
+  },
+  subtitle1: {
+    fontSize: 9,
+    lineHeight: 15,
+    fontFamily: 'Poppins-Regular',
+    color: primaryColor,
+
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
     color: '#0a7ea4',
+    fontFamily: 'Poppins-Bold',
+
   },
 });

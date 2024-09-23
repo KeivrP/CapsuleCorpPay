@@ -12,10 +12,7 @@ export default function HomeScreen() {
       headerImage={
 
           <ThemedView style={styles.container}>
-            <Image
-            source={require('@/assets/images/react-logo.png')}
-            style={styles.profileImage}
-          />
+  
             <ThemedView style={styles.textContainer}>
               <ThemedText style={styles.greeting}>Hello</ThemedText>
               <ThemedText style={styles.name}>Ibrahim</ThemedText>
