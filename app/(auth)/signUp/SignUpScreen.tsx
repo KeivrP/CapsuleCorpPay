@@ -7,7 +7,7 @@ import { primaryColor } from '@/constants/Colors';
 import { CreditSignup } from '@/components/svg/CreditSignup';
 import { useRouter } from 'expo-router';
 import { InstantSignup } from '@/components/svg/InstantSignUp';
-import CreditSignUp from './components/creditSignUpSheet';
+import CreditSignUp from '../components/creditSignUpSheet';
 import { BottomModalRef } from '@/components/BottomSheet';
 
 const SignUpScreen = () => {
@@ -28,7 +28,7 @@ const SignUpScreen = () => {
         </View>,
         title: 'Instant Sign Up',
         description: 'Describe your sign up process here. For example, sign up right now and signup bonus lorem ipsum text for example.',
-        path: () => modalRef.current?.open(),
+        path: () => route.push('/(auth)/signUp/SignUpRefrelScreen'),
     }];
 
 

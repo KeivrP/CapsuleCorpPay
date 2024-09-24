@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Regular',
+    color: primaryColor,
 
   },
   title: {

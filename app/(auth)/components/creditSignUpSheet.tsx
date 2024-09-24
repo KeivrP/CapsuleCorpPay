@@ -4,12 +4,21 @@ import BottomModal, { BottomModalRef } from "@/components/BottomSheet";
 import { ButtonBrand } from "@/components/button/ButtonBrand";
 import { ThemedText } from "@/components/ThemedText";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
+import { Link, useRouter } from "expo-router";
 
 interface CreditSignUpProps {
     modalRef: React.RefObject<BottomModalRef>;
 }
 
 const CreditSignUp = ({ modalRef }: CreditSignUpProps) => {
+
+    const route = useRouter();
+
+    const singUp = () => {  
+
+        route.push('/(auth)/signUp/SignUpCardScreen');
+        modalRef.current?.close();
+    }
 
     return (
         <BottomModal snapPoint={1000} ref={modalRef}>
@@ -28,7 +37,7 @@ const CreditSignUp = ({ modalRef }: CreditSignUpProps) => {
                 </View>
 
                 <View style={styles.button}>
-                    <ButtonBrand text="Sign Up" />
+                    <ButtonBrand text="Sign Up" onPress={() => singUp()} />
                 </View>
 
             </View>

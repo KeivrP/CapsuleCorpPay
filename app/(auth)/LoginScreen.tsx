@@ -20,7 +20,7 @@ const Login = () => {
           <TouchableOpacity onPress={() => modalRef.current?.open()}>
             <ThemedText type='signUp' >More</ThemedText>
           </TouchableOpacity>
-          <Link push href="/(auth)/SignUpScreen">
+          <Link push href="/(auth)/signUp/SignUpScreen">
             <ThemedText type='signUp' >Sign Up</ThemedText>
           </Link>
         </View>

@@ -17,7 +17,11 @@ export default function RootLayout() {
         <Stack>
             <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
             <Stack.Screen name="onBoardindScreen1" options={{ headerShown: false }} />
-            <Stack.Screen name="SignUpScreen" options={{ headerShown: false }} />
+            <Stack.Screen name="signUp/SignUpScreen" options={{ headerShown: false }} />
+            <Stack.Screen name="signUp/SignUpCardScreen" options={{ headerShown: false }} />
+            <Stack.Screen name="signUp/SignUpCreditSucces" options={{ headerShown: false }} />
+            <Stack.Screen name="signUp/SignUpRefrelScreen" options={{ headerShown: false }} />
+            <Stack.Screen name="signUp/signUpQrScreen" options={{ headerShown: false }} />
         </Stack>
     )
 }
