@@ -8,6 +8,7 @@ import { primaryColor } from '@/constants/Colors';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { UploadQr } from '@/components/svg/UploadQr';
 import { QRScanner } from '@/components/qr/ScanerQrSignUp';
+import { useSession } from '@/context/AuthSession';
 
 const QRScannerScreen = () => {
     const [isVisble, setIsVisible] = useState(false);
@@ -20,7 +21,7 @@ const QRScannerScreen = () => {
         useCallback(() => {
             if (data) {
                 setIsVisible(false);
-                route.navigate('/(auth)/signUp/SignUpCreditSucces');
+                route.navigate(`/(auth)/signUp/SignUpCreditSucces?token=${data}`);
             }
             else {
                 setIsVisible(true);

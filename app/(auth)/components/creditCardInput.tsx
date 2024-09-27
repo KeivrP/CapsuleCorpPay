@@ -1,5 +1,6 @@
 import { ButtonBrand } from '@/components/button/ButtonBrand';
 import { CreditCardFormField, CreditCardFormData, CreditCardView, LiteCreditCardInput } from '@/components/creditCardInput/src';
+import { useSession } from '@/context/AuthSession';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -50,9 +51,10 @@ export default function CreditCard() {
 
     const route = useRouter();
 
+
     const Procede = () => {  
-        route.push('/(auth)/signUp/SignUpCreditSucces');
-    }
+        route.push(`/(auth)/signUp/SignUpCreditSucces?token=${formData?.values.number}`);
+  }
 
     const [focusedField, setFocusedField] = useState<CreditCardFormField>();
 

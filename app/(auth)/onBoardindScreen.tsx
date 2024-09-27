@@ -1,18 +1,33 @@
 import { OnBoardingImg1 } from '@/assets/login/onBoardingImg1';
 import { OnBoardingImg2 } from '@/assets/login/onBoardingImg2';
+import { SectionProps, SectionsList } from '@/components/navigation/SectionList';
 import { ThemedText } from '@/components/ThemedText';
 import { disabledColor, primaryColor } from '@/constants/Colors';
 import { Link } from 'expo-router';
 
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { type FlatList } from 'react-native-gesture-handler';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 
+const { width: windowWidth } = Dimensions.get('window');
 
-const onBoardindScreen1 = () => {
+
+const onBoardindScreen = () => {
+  const flatListRef = useRef<FlatList | null>(null);
+  const [positionX, setPositionX] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = 2;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentPage(Math.round(positionX / windowWidth));
+    }, 50);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [positionX]);
 
   const renderDots = () => {
     const dots = [];
@@ -33,21 +48,46 @@ const onBoardindScreen1 = () => {
   function next() {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
+      if (flatListRef.current) {
+        flatListRef.current.scrollToIndex({ index: currentPage + 1 });
+      }
     }
   }
 
   function back() {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
+      if (flatListRef.current) {
+        flatListRef.current.scrollToIndex({ index: currentPage - 1 });
+      }
     }
   }
+
+  const items = useMemo<SectionProps[]>(
+    () => [
+      {
+        description:
+          'We are into automating Microfinance in World',
+
+        img: OnBoardingImg1(),
+
+      },
+      {
+        description:
+          'CapsuleCorpPay is a Microfinance business  Software',
+        img: OnBoardingImg2(),
+      },
+
+    ],
+    []
+  );
+
 
   const viewOnboarding = () => {
     if (currentPage === 0) {
       return (
         <View style={styles.container}>
-          {OnBoardingImg1()}
-          <ThemedText type='title' style={styles.text} >We are into automating Microfinance in World</ThemedText>
+
           <View style={styles.dotsContainer}>
             {renderDots()}
           </View>
@@ -65,11 +105,7 @@ const onBoardindScreen1 = () => {
     if (currentPage === 1) {
       return (
         <View style={styles.container}>
-          <View style={styles.image}>
-            {OnBoardingImg2()}
-          </View>
-          <ThemedText type='title' style={styles.text} >CapsuleCorpPay is a Microfinance business  Software
-          </ThemedText>
+
           <View style={styles.dotsContainer}>
             {renderDots()}
           </View>
@@ -88,29 +124,29 @@ const onBoardindScreen1 = () => {
 
   return (
     <>
+
+      <SectionsList
+        listRef={flatListRef}
+        items={items}
+        onScrollX={(x) => {
+          setPositionX(x);
+        }}
+      />
       {viewOnboarding()}
+
     </>
 
   );
 };
 
-export default onBoardindScreen1;
+export default onBoardindScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  image: {
-
-  },
-  text: {
-    textAlign: 'center',
-    width: '90%',
-    paddingVertical: 92,
-    fontFamily: 'Poppins-Bold',
-  },
+ 
   dotsContainer: {
     flexDirection: 'row',
     alignItems: 'center',

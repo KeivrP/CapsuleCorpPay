@@ -37,17 +37,20 @@ function useProtectedRoute(session: string | null) {
     const inAuthGroup = segments[0] === "(auth)";
     if (!session && !inAuthGroup) {
       // Si no hay sesión y no estamos en el grupo de autenticación, redirigimos a la página de autenticación
-      router.replace("/(auth)/onBoardindScreen1");
+      router.replace("/(auth)/onBoardindScreen");
     } else if (session && inAuthGroup) {
       // Si hay sesión y estamos en el grupo de autenticación, redirigimos a la página principal
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/home");
+      console.log("hola");
     }
   }, [session, segments]);
 }
 
 // Este componente provee el contexto de autenticación a sus componentes hijos
 export function SessionProvider(props: React.PropsWithChildren) {
-  const [[isLoading, session], setSession] = useStorageState("Token");
+  const [[isLoading, session], setSession] = useStorageState("Tokene");
+  
+  console.log(session, 'session');
 
   useProtectedRoute(session);
 

@@ -3,16 +3,26 @@ import { View, StyleSheet, Image } from "react-native";
 import { ButtonBrand } from "@/components/button/ButtonBrand";
 import { ThemedText } from "@/components/ThemedText";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { useRouter } from "expo-router";
+import { useGlobalSearchParams, useRouter } from "expo-router";
+import { useSession } from "@/context/AuthSession";
 
 
 const SignUpCreditSucces = () => {
 
     const route = useRouter();
+    const { signIn } = useSession();
 
+    const { token } = useGlobalSearchParams();
     const singUp = () => {
-        route.push('/(auth)/signUp/SignUpCardScreen');
+        if (token) {
+            signIn(token as string);
+            route.push('/(tabs)/home');
+
+        }
     }
+
+    console.log(token, 'token');
+
 
     return (
         <View style={styles.container}>

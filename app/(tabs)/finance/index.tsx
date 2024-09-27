@@ -1,28 +1,21 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, View, TouchableOpacity } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useSession } from '@/context/AuthSession';
 
-export default function HomeScreen() {
+export default function FinanceScreen() {
+
+  const { signOut } = useSession();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: 'transparent', dark: 'transparent' }}
-      headerImage={
 
-          <ThemedView style={styles.container}>
-  
-            <ThemedView style={styles.textContainer}>
-              <ThemedText style={styles.greeting}>Hello</ThemedText>
-              <ThemedText style={styles.name}>Ibrahim</ThemedText>
-            </ThemedView>
-            {/* Aquí puedes agregar el icono de búsqueda si lo necesitas */}
-          </ThemedView>
-
-      }>
-
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={() => signOut()}>
+        <HelloWave />
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -42,6 +35,7 @@ const styles = StyleSheet.create({
 
   },
   container: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
