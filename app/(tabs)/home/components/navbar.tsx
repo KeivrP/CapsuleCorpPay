@@ -1,7 +1,7 @@
 import { InputSearch } from '@/components/input/inputSearch';
 import { ThemedText } from '@/components/ThemedText';
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
 const NavbarHome = () => {
@@ -42,9 +42,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    searchIcon: {
-        // Estilos para el icono de búsqueda
-    },
+
 });
 
 export default NavbarHome;
