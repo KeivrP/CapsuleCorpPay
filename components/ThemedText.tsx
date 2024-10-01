@@ -6,7 +6,7 @@ import { primaryColor } from '@/constants/Colors';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'signUp' | 'headerText' | 'subtitle1' | 'headerText1' | 'subtitle2' | 'subtitle3' | 'titleCard' | 'amountText';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'signUp' | 'headerText' | 'subtitle1' | 'headerText1' | 'subtitle2' | 'subtitle3' | 'titleCard' | 'amountText' | 'textPayment';
 };
 
 export function ThemedText({
@@ -35,6 +35,7 @@ export function ThemedText({
         type === 'subtitle3' ? styles.subtitle3 : undefined,
         type === 'titleCard' ? styles.titleCard : undefined,
         type === 'amountText' ? styles.amountText : undefined,  
+        type === 'textPayment' ? styles.textPayment : undefined,
         style,
       ]}
       {...rest}
@@ -100,6 +101,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Poppins-Bold',
+    color: primaryColor,
+
 
   },
   subtitle1: {
@@ -127,6 +130,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 18,
     fontFamily: 'Poppins-Regular',
+    color: primaryColor,
+
+  },
+  textPayment: {
+    fontSize: 17,
+    lineHeight: 24,
+    fontFamily: 'Poppins-Bold',
     color: primaryColor,
 
   },

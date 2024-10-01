@@ -22,11 +22,30 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="finance"
+        name="location"
         options={{
-          title: 'Explore',         
+          title: 'Location',         
         }}
       />
+      <Tabs.Screen
+        name="scanQR"
+        options={{
+          title: 'ScanQR',         
+        }}
+      />
+        <Tabs.Screen
+          name="finance"
+          options={{
+            title: 'Finance',         
+          }}
+        />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',         
+        }}
+      />
+ 
     </Tabs>
   );
 }
