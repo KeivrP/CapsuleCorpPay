@@ -1,66 +1,42 @@
-import { Image, StyleSheet, Platform, View, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { StyleSheet, View, Text, Dimensions, SafeAreaView } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ScratchCard from './components/scratchcard';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { useSession } from '@/context/AuthSession';
-import MapView from 'react-native-maps';
+const windowInitial = Dimensions.get('window');
+
 
 export default function ProfileScreen() {
+  const [dimensions, setDimensions] = useState({ window: windowInitial });
 
-  const { signOut } = useSession();
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener('change', ({ window }) => {
+      setDimensions({ window });
+    });
+    return () => subscription?.remove();
+  });
+
   return (
-
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => signOut()}>
-      <MapView style={styles.map} />
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView>
+      <GestureHandlerRootView>
+        <View
+          style={[
+            styles.root,
+            {
+              width: dimensions.window.width,
+              height: dimensions.window.height,
+            },
+          ]}>
+          <ScratchCard />
+        </View>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  root: {
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 100,
-    width: 185,
-
-  },
-
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20, // Para hacer la imagen circular
-    marginRight: 10,
-  },
-  textContainer: {
-    flexDirection: 'column',
-  },
-  greeting: {
-    fontSize: 14,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

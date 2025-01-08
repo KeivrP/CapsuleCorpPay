@@ -11,17 +11,12 @@ export default function RootLayout() {
     }
 
     if (session) {
-        return <Redirect href="/(tabs)/" />;
+        return <Redirect href="/(tabs)" />;
     }
     return (
         <Stack>
             <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
             <Stack.Screen name="onBoardindScreen" options={{ headerShown: false }} />
-            <Stack.Screen name="signUp/SignUpScreen" options={{ headerShown: false }} />
-            <Stack.Screen name="signUp/SignUpCardScreen" options={{ headerShown: false }} />
-            <Stack.Screen name="signUp/SignUpCreditSucces" options={{ headerShown: false }} />
-            <Stack.Screen name="signUp/SignUpRefrelScreen" options={{ headerShown: false }} />
-            <Stack.Screen name="signUp/signUpQrScreen" options={{ headerShown: false }} />
         </Stack>
     )
 }

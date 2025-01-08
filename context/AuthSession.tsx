@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
-import { createContext, useContext, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useRouter, useSegments } from "expo-router";
 import { useStorageState } from "./useStorageState";
 
@@ -47,9 +46,9 @@ function useProtectedRoute(session: string | null) {
 }
 
 // Este componente provee el contexto de autenticación a sus componentes hijos
-export function SessionProvider(props: React.PropsWithChildren) {
+export function SessionProvider(props: Readonly<React.PropsWithChildren>) {
   const [[isLoading, session], setSession] = useStorageState("Tokene");
-  
+
   console.log(session, 'session');
 
   useProtectedRoute(session);
@@ -57,8 +56,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-
-
         // Función manejar la session
         signOut: () => {
           setSession(null);

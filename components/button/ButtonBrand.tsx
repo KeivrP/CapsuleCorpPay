@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     Text,
     TouchableOpacity,
@@ -6,7 +6,6 @@ import {
     TextStyle,
     ActivityIndicator,
 } from 'react-native'
-import { useMemo } from 'react'
 import { TouchableOpacity as TOSheet } from '@gorhom/bottom-sheet'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 

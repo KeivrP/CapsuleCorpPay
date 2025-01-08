@@ -1,173 +1,272 @@
-import { OnBoardingImg1 } from '@/assets/login/onBoardingImg1';
-import { OnBoardingImg2 } from '@/assets/login/onBoardingImg2';
-import { SectionProps, SectionsList } from '@/components/navigation/SectionList';
-import { ThemedText } from '@/components/ThemedText';
-import { disabledColor, primaryColor } from '@/constants/Colors';
-import { Link } from 'expo-router';
+import React, { useState, useRef } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
+import LinearGradient from 'react-native-linear-gradient';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { type FlatList } from 'react-native-gesture-handler';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+const { width, height } = Dimensions.get('window');
 
-const { width: windowWidth } = Dimensions.get('window');
+interface Slide {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  image: string;
+}
 
+type NavigationProp = {
+  navigate: (screen: string) => void;
+};
 
-const onBoardindScreen = () => {
-  const flatListRef = useRef<FlatList | null>(null);
-  const [positionX, setPositionX] = useState(0);
+const slides: Slide[] = [
+  {
+    id: '1',
+    title: '¡Bienvenido a Domus!',
+    description: 'Simplifica la gestión de tu comercio. Con Domus, asegura tu negocio y controla tus operaciones de forma fácil y segura.',
+    icon: 'tablet',
+    image: 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    id: '2',
+    title: 'Conectate en segundos',
+    description: 'Regístrata tu cuenta en pocos pasos y activa la seguridad con un PIN único para cada operador. Tus datos siempre estarán protegidos.',
+    icon: 'user-plus',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    id: '3',
+    title: '¡Listo para empezar!',
+    description: 'Explora todas las funciones de Domus y optimiza la gestión de tu comercio. ¡Comienza ahora!',
+    icon: 'play-circle',
+    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=1000'
+  }
+];
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = 2;
+const onboardingScreen: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const flatListRef = useRef<FlatList<Slide>>(null);
+  const navigation = useNavigation<NavigationProp>();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCurrentPage(Math.round(positionX / windowWidth));
-    }, 50);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [positionX]);
-
-  const renderDots = () => {
-    const dots = [];
-    for (let i = 0; i < totalPages; i++) {
-      dots.push(
-        <View
-          key={i}
-          style={[
-            styles.dot,
-            currentPage === i && styles.activeDot,
-          ]}
+  const renderItem = ({ item }: { item: Slide }) => (
+    <View style={styles.slide}>
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: item.image }}
+          style={styles.image}
+          resizeMode="cover"
         />
-      );
-    }
-    return dots;
-  };
+        <View style={styles.overlay}>
+          <Icon 
+            name={item.icon}
+            size={80}
+            color="#FFFFFF"
+          />
+        </View>
+      </View>
 
-  function next() {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-      if (flatListRef.current) {
-        flatListRef.current.scrollToIndex({ index: currentPage + 1 });
-      }
-    }
-  }
-
-  function back() {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-      if (flatListRef.current) {
-        flatListRef.current.scrollToIndex({ index: currentPage - 1 });
-      }
-    }
-  }
-
-  const items = useMemo<SectionProps[]>(
-    () => [
-      {
-        description:
-          'We are into automating Microfinance in World',
-
-        img: OnBoardingImg1(),
-
-      },
-      {
-        description:
-          'CapsuleCorpPay is a Microfinance business  Software',
-        img: OnBoardingImg2(),
-      },
-
-    ],
-    []
+      <View style={styles.content}>
+        <View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+        </View>
+      </View>
+    </View>
   );
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollPosition / width);
+    setCurrentSlide(index);
+  };
 
-  const viewOnboarding = () => {
-    if (currentPage === 0) {
-      return (
-        <View style={styles.container}>
+  const goToSlide = (index: number) => {
+    flatListRef.current?.scrollToIndex({
+      index,
+      animated: true,
+    });
+    setCurrentSlide(index);
+  };
 
-          <View style={styles.dotsContainer}>
-            {renderDots()}
-          </View>
-          <View style={styles.button}>
-            <TouchableOpacity disabled onPress={() => console.log('OnBoardingScreen2')}>
-              <ThemedText style={{ color: disabledColor }}>Skip</ThemedText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => next()}>
-              <ThemedText>Next</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )
-    }
-    if (currentPage === 1) {
-      return (
-        <View style={styles.container}>
-
-          <View style={styles.dotsContainer}>
-            {renderDots()}
-          </View>
-          <View style={styles.button}>
-            <TouchableOpacity onPress={() => back()}>
-              <ThemedText >Back</ThemedText>
-            </TouchableOpacity>
-            <Link push href="/(auth)/LoginScreen">
-              <ThemedText >Next</ThemedText>
-            </Link>
-          </View>
-        </View>
-      )
-    }
-  }
+  const getItemLayout = (_: ArrayLike<Slide> | null | undefined, index: number) => ({
+    length: width,
+    offset: width * index,
+    index,
+  });
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <LinearGradient
+        colors={["#0f065a", "#B2B5DE", "#C8CCE8"]}
+        style={styles.gradient}
+      >
+        <View style={styles.card}>
+          <FlatList
+        ref={flatListRef}
+        data={slides}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        getItemLayout={getItemLayout}
+          />
 
-      <SectionsList
-        listRef={flatListRef}
-        items={items}
-        onScrollX={(x) => {
-          setPositionX(x);
-        }}
-      />
-      {viewOnboarding()}
+          <View style={styles.navigation}>
+        <View style={styles.dotsContainer}>
+          {slides.map((_, index) => (
+            <TouchableOpacity
+          key={index.toPrecision(1)}
+          onPress={() => goToSlide(index)}
+          style={[
+            styles.dot,
+            currentSlide === index && styles.activeDot,
+          ]}
+            />
+          ))}
+        </View>
 
-    </>
-
+        {currentSlide === slides.length - 1 ? (
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate('LoginScreen')}
+          >
+            <Text style={styles.loginButtonText}>Iniciar sesión</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => goToSlide(currentSlide + 1)}
+            style={styles.navButton}
+          >
+            <Text style={styles.navButtonText}>Siguiente</Text>
+            <Icon name="chevron-right" size={24} color="#4B5563" />
+          </TouchableOpacity>
+        )}
+          </View>
+        </View>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 
-export default onBoardindScreen;
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 24,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    height: height - 84,
+  },
+  slide: {
+    width: width - 32,
+    height: '100%',
+  },
+  imageContainer: {
+    height: '50%',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     justifyContent: 'center',
     alignItems: 'center',
   },
- 
+  content: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1F2937',
+    marginBottom: 16,
+  },
+  description: {
+    fontSize: 16,
+    color: '#4B5563',
+    lineHeight: 24,
+  },
+  navigation: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 24,
+    gap: 24,
+  },
   dotsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    position: 'absolute', // Position it at the bottom
-    bottom: heightPercentageToDP(25), // Adjust as needed
+    justifyContent: 'center',
+    gap: 8,
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#ccc',
-    marginHorizontal: 5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#D1D5DB',
   },
   activeDot: {
-    backgroundColor: primaryColor,
+    width: 32,
+    backgroundColor: '#0f065a',
   },
-  button: {
+  navButton: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    position: 'absolute', // Position it at the bottom
-    bottom: heightPercentageToDP(10), // Adjust as needed
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: '#F3F4F6',
+  },
+  navButtonText: {
+    color: '#4B5563',
+    marginHorizontal: 8,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  loginButton: {
+    backgroundColor: '#0f065a',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });
+
+export default onboardingScreen;

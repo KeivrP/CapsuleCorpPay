@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import React from 'react';
 import 'react-native-reanimated'
-import 'react-native-gesture-handler'
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen'
 import { Slot } from 'expo-router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -19,8 +17,8 @@ export { ErrorBoundary } from 'expo-router';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
- 
-  /*   const colorScheme = useColorScheme(); */
+
+  /*   const  = useColorScheme(); */
   const [loaded, error] = useFonts({
     "Poppins-Bold": require('../assets/fonts/Poppins-Bold.ttf'),
     "Poppins-Regular": require('../assets/fonts/Poppins-Regular.ttf'),
@@ -41,20 +39,18 @@ export default function RootLayout() {
   }
 
   return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <BottomSheetModalProvider>
-            <SessionProvider>
-              
-                <ThemeProvider value={DefaultTheme}>
-                  <Slot />
-                  <Toast />
-                </ThemeProvider>
-
-            </SessionProvider>
-          </BottomSheetModalProvider>
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <BottomSheetModalProvider>
+          <SessionProvider>
+            <ThemeProvider value={DefaultTheme}>
+              <Slot />
+              <Toast />
+            </ThemeProvider>
+          </SessionProvider>
+        </BottomSheetModalProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }
 
