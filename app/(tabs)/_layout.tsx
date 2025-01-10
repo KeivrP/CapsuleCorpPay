@@ -8,8 +8,8 @@ import {
   View,
 } from 'react-native';
 import { CurvedBottomBarExpo } from 'react-native-curved-bottom-bar';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import HomeScreen from './home';
 
 LogBox.ignoreAllLogs();

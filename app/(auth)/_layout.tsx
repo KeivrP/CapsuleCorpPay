@@ -1,7 +1,15 @@
 import React from "react";
-import { Stack, Slot } from "expo-router"; // Usamos Slot aquí
 import { useSession } from "@/context/AuthSession";
 import { Loading } from "@/components/animated/Loading";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from "../(tabs)/home";
+import LoginScreen from "./LoginScreen";
+import OnboardingScreen from "./onBoardindScreen";
+
+
+const Stack = createNativeStackNavigator();
+
 
 export default function AuthLayout() {
   const { session, isLoading } = useSession();
@@ -11,20 +19,23 @@ export default function AuthLayout() {
   }
 
   return (
-    <Stack>
+    <NavigationContainer independent={true}>
+
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {session ? (
         // Si el usuario está autenticado, navegamos a la pestaña principal
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" component={HomeScreen} />
       ) : (
         <>
           {/* Si no está autenticado, mostramos pantallas de login y onboarding */}
-          <Stack.Screen name="loginScreen" options={{ headerShown: false }} />
-          <Stack.Screen name="onBoardingScreen" options={{ headerShown: false }} />
+          <Stack.Screen name="onBoardingScreen" component={OnboardingScreen} />
+          <Stack.Screen name="loginScreen" component={LoginScreen} />
         </>
       )}
       
       {/* Aquí, el Slot se encargará de renderizar la ruta activa */}
-      <Slot />
-    </Stack>
+    </Stack.Navigator>
+    </NavigationContainer>
+
   );
 }

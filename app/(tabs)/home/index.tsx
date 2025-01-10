@@ -45,7 +45,7 @@ const ProfileScreen = () => {
 export default function HomeScreen() {
   return (
     <NavigationContainer independent={true}>
-      <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomeMain" component={HomeMain} />
         <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />

@@ -54,7 +54,7 @@ const slides: Slide[] = [
   }
 ];
 
-const onboardingScreen: React.FC = () => {
+const OnboardingScreen: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const flatListRef = useRef<FlatList<Slide>>(null);
   const navigation = useNavigation<NavigationProp>();
@@ -142,7 +142,7 @@ const onboardingScreen: React.FC = () => {
         {currentSlide === slides.length - 1 ? (
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => navigation.navigate('LoginScreen')}
+            onPress={() => navigation.navigate('loginScreen')}
           >
             <Text style={styles.loginButtonText}>Iniciar sesión</Text>
           </TouchableOpacity>
@@ -269,4 +269,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default onboardingScreen;
+export default OnboardingScreen;
