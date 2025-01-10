@@ -1,22 +1,30 @@
-import React from "react"
-import { Redirect, Stack } from "expo-router"
+import React from "react";
+import { Stack, Slot } from "expo-router"; // Usamos Slot aquí
 import { useSession } from "@/context/AuthSession";
 import { Loading } from "@/components/animated/Loading";
 
-export default function RootLayout() {
-    const { session, isLoading } = useSession()
+export default function AuthLayout() {
+  const { session, isLoading } = useSession();
 
-    if (isLoading) {
-        return <Loading />
-    }
+  if (isLoading) {
+    return <Loading />;
+  }
 
-    if (session) {
-        return <Redirect href="/(tabs)" />;
-    }
-    return (
-        <Stack>
-            <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
-            <Stack.Screen name="onBoardindScreen" options={{ headerShown: false }} />
-        </Stack>
-    )
+  return (
+    <Stack>
+      {session ? (
+        // Si el usuario está autenticado, navegamos a la pestaña principal
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      ) : (
+        <>
+          {/* Si no está autenticado, mostramos pantallas de login y onboarding */}
+          <Stack.Screen name="loginScreen" options={{ headerShown: false }} />
+          <Stack.Screen name="onBoardingScreen" options={{ headerShown: false }} />
+        </>
+      )}
+      
+      {/* Aquí, el Slot se encargará de renderizar la ruta activa */}
+      <Slot />
+    </Stack>
+  );
 }

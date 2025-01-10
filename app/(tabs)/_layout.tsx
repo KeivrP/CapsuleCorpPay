@@ -61,7 +61,7 @@ export default function LayoutApp() {
   };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <CurvedBottomBarExpo.Navigator
       type="DOWN"
       style={styles.bottomBar}

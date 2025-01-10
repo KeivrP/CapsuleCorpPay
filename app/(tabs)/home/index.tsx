@@ -1,9 +1,12 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const Stack = createStackNavigator();
+// Definimos el Stack Navigator
+const Stack = createNativeStackNavigator();
 
+// Pantalla principal HomeMain
 const HomeMain = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
@@ -20,6 +23,7 @@ const HomeMain = ({ navigation }: { navigation: any }) => {
   );
 };
 
+// Pantalla DetailsScreen
 const DetailsScreen = () => {
   return (
     <View style={styles.container}>
@@ -28,6 +32,7 @@ const DetailsScreen = () => {
   );
 };
 
+// Pantalla ProfileScreen
 const ProfileScreen = () => {
   return (
     <View style={styles.container}>
@@ -36,16 +41,20 @@ const ProfileScreen = () => {
   );
 };
 
+// Pantalla principal HomeScreen con la configuración del Stack Navigator
 export default function HomeScreen() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="HomeMain" component={HomeMain} />
-      <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-    </Stack.Navigator>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator screenOptions={{ headerShown: true }}>
+        <Stack.Screen name="HomeMain" component={HomeMain} />
+        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
+// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -57,3 +66,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+ 

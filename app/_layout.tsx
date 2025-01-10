@@ -1,15 +1,12 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-import 'react-native-reanimated'
-import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import 'react-native-reanimated';
+import { DefaultTheme, NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen'
+import * as SplashScreen from 'expo-splash-screen';
 import { Slot } from 'expo-router';
 import React, { useEffect } from 'react';
-
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
-
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SessionProvider } from '@/context/AuthSession';
 export { ErrorBoundary } from 'expo-router';
@@ -17,8 +14,6 @@ export { ErrorBoundary } from 'expo-router';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-  /*   const  = useColorScheme(); */
   const [loaded, error] = useFonts({
     "Poppins-Bold": require('../assets/fonts/Poppins-Bold.ttf'),
     "Poppins-Regular": require('../assets/fonts/Poppins-Regular.ttf'),
@@ -30,12 +25,12 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync(); // Ocultar pantalla de carga cuando las fuentes estén cargadas
     }
   }, [loaded]);
 
-  if (!loaded && !error) {
-    return null;
+  if (!loaded || error) {
+    return null; // Prevenir la renderización hasta que las fuentes estén cargadas
   }
 
   return (
@@ -44,13 +39,13 @@ export default function RootLayout() {
         <BottomSheetModalProvider>
           <SessionProvider>
             <ThemeProvider value={DefaultTheme}>
-              <Slot />
-              <Toast />
+                {/* Asegúrate de que el contexto de navegación esté disponible */}
+                <Slot />
+                <Toast />
             </ThemeProvider>
           </SessionProvider>
         </BottomSheetModalProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
-  )
+  );
 }
-
