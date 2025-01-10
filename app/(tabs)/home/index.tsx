@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Modal, ScrollView, TouchableOpacity } from 'react-native';
-import * as Location from 'expo-location';
-import { LocationObject } from 'expo-location';
+import React, { useState, Suspense } from 'react';
+import { View, Text, Modal, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+
 import Wave from '@/assets/images/Onda.svg';
-import HowUse from '@/assets/images/instructions.svg';
-import How2Use from '@/assets/images/How2_use.svg';
 import NewSale from '@/assets/images/new_sale.svg';
 import ShowOrder from '@/assets/images/show-order.svg';
-import { useLocalSearchParams } from 'expo-router';
-import Notification from '@/assets/images/noticias.svg'
 import Back from '@/assets/images/back_button.svg'
-import Ilustration from '@/assets/images/ilustraçoes.svg'
-import UseBackground from '@/assets/images/Use_background.svg'
-import Use2Background from '@/assets/images/Use2_background.svg'
-import Frase1 from '@/assets/images/frase1.svg'
-import Frase2 from '@/assets/images/frase2.svg'
-import Frase3 from '@/assets/images/frase3.svg'
-import Frase4 from '@/assets/images/frase4.svg'
-import Frase5 from '@/assets/images/frase5.svg'
-import Frase6 from '@/assets/images/frase6.svg'
-import Frase7 from '@/assets/images/frase7.svg'
+
 import WaveStorage from '@/assets/images/wave-storage.svg';
 import styled from 'styled-components';
 import WaiterDashboard from '@/components/home/dashboard-operator';
 import { useSession } from '@/context/AuthSession';
 import AdminDashboard from '@/components/home/admin-dashboard';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import OrderScreen from '@/app/payment';
+import Invoice from '@/app/payment/invoice';
 
 interface User {
   id?: string;
@@ -52,26 +42,18 @@ export interface PackageHistoryItem {
   storage_code: string;
 }
 
-export default function HomeScreen() {
-  const [clientId, setClientId] = useState<string | null>(null);
-  const { name } = useLocalSearchParams();
+export default function MainScreen3({navigation}: {navigation: any}) {
   const [isHowUseVisible, setIsHowUseVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [userKind, setUserKind] = useState<string | null>(null);
   const { signOut } = useSession();
+  const route = useRouter();
 
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  const slides = [
+    { background: <OrderScreen /> },
+    { background: <Invoice />, },
 
-
-  const slides = userKind === 'armazenador' ? [
-    { background: <Use2Background />, frase: <Frase5 /> },
-    { background: <Use2Background />, frase: <Frase6 /> },
-    { background: <Use2Background />, frase: <Frase7 /> },
-  ] : [
-    { background: <UseBackground />, frase: <Frase1 /> },
-    { background: <UseBackground />, frase: <Frase2 /> },
-    { background: <UseBackground />, frase: <Frase3 /> },
-    { background: <UseBackground />, frase: <Frase4 /> },
   ];
 
   const handleNext = () => {
@@ -86,13 +68,17 @@ export default function HomeScreen() {
     }
   };
 
+  const toggleUserRole = () => {
+    setIsAdmin(prev => !prev);
+  };
+
   return (
     <ScrollView>
       <HomeScreenContainer>
         {/* Cabeçalho */}
         <HeaderContainer>
           <Alltext>
-            {false ? (
+            {isAdmin ? (
               <>
                 <HeaderText>
                   Hola  <UserName style={{ color: '#16488D' }}>Keiver</UserName>
@@ -109,7 +95,7 @@ export default function HomeScreen() {
             )}
           </Alltext>
           <WaveContainer>
-            {false ? <WaveStorage /> : <Wave />}
+            {isAdmin ? <WaveStorage /> : <Wave />}
           </WaveContainer>
         </HeaderContainer>
 
@@ -134,9 +120,25 @@ export default function HomeScreen() {
             </View>
           </ActionsSection>
           {/* <ActionsText>SubTitle</ActionsText> */}
-          {true ? <AdminDashboard /> : <WaiterDashboard />}
+          <Suspense fallback={
+            <LoadingContainer>
+              <ActivityIndicator size="large" color="#DB3319" />
+              <LoadingText>Cargando dashboard...</LoadingText>
+            </LoadingContainer>
+          }>
+            {isAdmin ? <AdminDashboard /> : <Invoice />}
+          </Suspense>
         </Container>
       </HomeScreenContainer>
+
+      {/* Botón flotante para cambiar rol */}
+      <FloatingButton onPress={toggleUserRole}>
+        <Ionicons
+          name={isAdmin ? "person-outline" : "business-outline"}
+          size={24}
+          color="white"
+        />
+      </FloatingButton>
 
       <Modal
         visible={isHowUseVisible}
@@ -150,15 +152,14 @@ export default function HomeScreen() {
               <Back />
             </CloseButton>
 
-            <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Como usar o Tá Entregue</Text>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Nuevo servicio</Text>
             {slides[currentSlide].background}
-            {slides[currentSlide].frase}
 
             <ButtonContainer>
-              <NavigationButton userKind={userKind} onPress={handlePrevious} disabled={currentSlide === 0}>
+              <NavigationButton userKind={""} onPress={handlePrevious} disabled={currentSlide === 0}>
                 <NavigationButtonText>Anterior</NavigationButtonText>
               </NavigationButton>
-              <NavigationButton userKind={userKind} onPress={handleNext} disabled={currentSlide === slides.length - 1}>
+              <NavigationButton userKind={""} onPress={handleNext} disabled={currentSlide === slides.length - 1}>
                 <NavigationButtonText>Próximo</NavigationButtonText>
               </NavigationButton>
             </ButtonContainer>
@@ -233,9 +234,7 @@ const ActionsSection = styled(ScrollView).attrs({
   contentContainerStyle: {
     paddingHorizontal: 10,
   },
-})
-  `
-  flex-direction: row;
+})`  flex-direction: row;
 `;
 
 const Alltext = styled(View)`
@@ -262,36 +261,38 @@ const HowUseContainer = styled(View)`
 
 const ModalContainer = styled(View)`
   flex: 1;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const ModalContent = styled(View)`
-  width: 100%;
-  background-color: #ffffff;
+  width: 95%;
+  height: 95%;
+  background-color: white;
+  border-radius: 20px;
   padding: 20px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
   align-items: center;
-  margin-top: 10px;
 `;
 
 const CloseButton = styled(TouchableOpacity)`
-  align-self: flex-start;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
 `;
 
 const ButtonContainer = styled(View)`
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
   width: 100%;
+  padding: 20px;
+  position: absolute;
+  bottom: 20px;
 `;
 
 const NavigationButton = styled(TouchableOpacity) <{ userKind: string | null }>`
-  background-color: ${({ userKind }) => (userKind === 'armazenador' ? '#16488D' : '#DB3319')};
+  background-color: ${({ userKind }) => (userKind === 'armazenador' ? '#16488D' : '#0f065a')};
   padding: 15px;
   border-radius: 50px;
   width: 25%;
@@ -303,5 +304,35 @@ const NavigationButtonText = styled(Text)`
   font-size: 12px;
   font-weight: 700;
   text-align: center;
+`;
+
+const LoadingContainer = styled(View)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+const LoadingText = styled(Text)`
+  margin-top: 10px;
+  color: #666;
+  font-size: 16px;
+`;
+
+const FloatingButton = styled(TouchableOpacity)`
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+  background-color: #DB3319;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  justify-content: center;
+  align-items: center;
+  elevation: 5;
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.25;
+  shadow-radius: 3.84px;
 `;
 

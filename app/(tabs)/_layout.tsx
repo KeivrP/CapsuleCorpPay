@@ -10,13 +10,9 @@ import {
 import { CurvedBottomBarExpo } from 'react-native-curved-bottom-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from './home';
+import HomeScreen from './home/home-navigate';
 
 LogBox.ignoreAllLogs();
-
-const Screen1 = () => {
-  return <View style={styles.screen1} />;
-};
 
 const Screen2 = () => {
   return <View style={styles.screen2} />;
@@ -27,25 +23,20 @@ export default function LayoutApp() {
     let icon = '';
 
     switch (routeName) {
-      case 'title1':
+      case 'settings':
         icon = 'settings-outline';
         break;
-      case 'title2':
-        icon = 'home-outline';
+        case 'home':
+          icon = 'home-outline';
         break;
-      case 'title3':
-        icon = 'settings-outline';
-        break;
-      case 'title5':
-        icon = 'home-outline';
-        break;
+    
     }
 
     return (
       <Ionicons
         name={icon as keyof typeof Ionicons.glyphMap}
         size={25}
-        color={routeName === selectedTab ? 'black' : 'gray'}
+        color={routeName === selectedTab ? '#0f065a' : 'gray'}
       />
     );
   };
@@ -61,7 +52,6 @@ export default function LayoutApp() {
   };
 
   return (
-    <NavigationContainer independent={true}>
       <CurvedBottomBarExpo.Navigator
       type="DOWN"
       style={styles.bottomBar}
@@ -69,7 +59,7 @@ export default function LayoutApp() {
       height={55}
       circleWidth={50}
       bgColor="white"
-      initialRouteName="title3"
+      initialRouteName="home"
       borderTopLeftRight
       screenOptions={{ headerShown: false }}
       renderCircle={() => (
@@ -78,33 +68,26 @@ export default function LayoutApp() {
           style={styles.button}
           onPress={() => Alert.alert('Click Action')}
         >
-          <Ionicons name={'apps-sharp'} color="gray" size={25} />
+          <Ionicons name={'apps-sharp'} color="white" size={25} />
         </TouchableOpacity>
         </Animated.View>
       )}
       tabBar={renderTabBar}
       >
       <CurvedBottomBarExpo.Screen
-        name="title3"
+        name="home"
         position="LEFT"
         component={() => <HomeScreen />}
-      />
-      
+      />     
       <CurvedBottomBarExpo.Screen
-        name="title1"
-        position="LEFT"
-        component={() => <Screen1 />}
-      />
-      <CurvedBottomBarExpo.Screen
-        name="title5"
+        name="settings"
         component={() => <Screen2 />}
         position="RIGHT"
       />
+     
       </CurvedBottomBarExpo.Navigator>
-    </NavigationContainer>
   );
 }
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,

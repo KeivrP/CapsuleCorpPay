@@ -60,7 +60,7 @@ const onboardingScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
 
   const renderItem = ({ item }: { item: Slide }) => (
-    <View style={styles.slide}>
+    <View style={[styles.slide, { width }]}>
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: item.image }}
@@ -183,10 +183,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    height: height - 84,
+    height: height * 0.9,
   },
   slide: {
-    width: width - 32,
     height: '100%',
   },
   imageContainer: {
@@ -224,12 +223,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 24,
-    gap: 24,
+    height: 140,
+    backgroundColor: 'white',
   },
   dotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 8,
+    height: 32,
+    alignItems: 'center',
+    marginBottom: 16,
   },
   dot: {
     width: 12,
@@ -248,6 +251,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     backgroundColor: '#F3F4F6',
+    height: 48,
+    width: '100%',
   },
   navButtonText: {
     color: '#4B5563',
@@ -257,10 +262,11 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: '#0f065a',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    height: 48,
+    width: '100%',
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   loginButtonText: {
     color: 'white',

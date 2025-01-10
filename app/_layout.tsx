@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import 'react-native-reanimated'
-import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+
+import { DefaultTheme, NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen'
 import { Slot } from 'expo-router';
@@ -41,6 +42,8 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
+      <NavigationContainer independent={true}>
+
         <BottomSheetModalProvider>
           <SessionProvider>
             <ThemeProvider value={DefaultTheme}>
@@ -49,6 +52,7 @@ export default function RootLayout() {
             </ThemeProvider>
           </SessionProvider>
         </BottomSheetModalProvider>
+      </NavigationContainer>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   )
