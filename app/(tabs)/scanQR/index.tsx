@@ -5,6 +5,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useSession } from '@/context/AuthSession';
+import NFCReader from '@/components/nfc/nfcReader';
 
 export default function ProfileScreen() {
 
@@ -12,9 +13,8 @@ export default function ProfileScreen() {
   return (
 
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => signOut()}>
-        <HelloWave />
-      </TouchableOpacity>
+
+        <NFCReader/>
     </View>
   );
 }

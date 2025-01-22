@@ -13,9 +13,7 @@ export default function ProfileScreen() {
   return (
 
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => signOut()}>
-      <MapView style={styles.map} />
-      </TouchableOpacity>
+      
     </View>
   );
 }
